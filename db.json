@@ -1,0 +1,13 @@
+{
+  "users": [
+    { "id": 1, "username": "admin_test", "password": "admin123", "role": "ADMIN", "active": true },
+    { "id": 2, "username": "driver_ali", "password": "driver123", "role": "DRIVER", "active": true },
+    { "id": 3, "username": "driver_sara", "password": "driver123", "role": "DRIVER", "active": true },
+    { "id": 4, "username": "driver_suspended", "password": "driver123", "role": "DRIVER", "active": false }
+  ],
+  "trucks": [
+    { "id": 1, "plateNumber": "AB-123-CD", "status": "AVAILABLE", "brand": "Volvo" },
+    { "id": 2, "plateNumber": "EF-456-GH", "status": "AVAILABLE", "brand": "Renault" },
+    { "id": 3, "plateNumber": "IJ-789-KL", "status": "MAINTENANCE", "brand": "Mercedes" }
+  ]
+}
