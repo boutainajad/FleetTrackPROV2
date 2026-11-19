@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getUsers, createUser } from "../api";
+import UserForm from "./UserForm";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -7,6 +8,7 @@ export default function UserList() {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
   async function load() {
     setLoading(true);
@@ -21,14 +23,11 @@ export default function UserList() {
     }
   }
 
-  async function handleCreate() {
+  async function handleCreate(formData) {
     try {
-      const newUser = await createUser({
-        username: "new_driver_" + Date.now(),
-        password: "pass123",
-        role: "DRIVER",
-      });
+      const newUser = await createUser(formData);
       setUsers([...users, newUser]);
+      setShowForm(false);
     } catch (e) {
       setError(e.message);
     }
@@ -41,17 +40,30 @@ export default function UserList() {
 
   return (
     <div>
-      <h2> Utilisateurs</h2>
+      <h2>Utilisateurs</h2>
+
       <div className="filter-row">
         <button onClick={load}>Charger</button>
-        <button onClick={handleCreate}>+ Nouveau chauffeur</button>
+        <button onClick={() => setShowForm(!showForm)}>
+          {showForm ? "Fermer" : "+ Nouveau"}
+        </button>
+
         <label>Filtre :</label>
         <select value={filter} onChange={(e) => setFilter(e.target.value)}>
           <option value="ALL">Tous</option>
           <option value="ADMIN">Admin</option>
           <option value="DRIVER">Chauffeur</option>
         </select>
+
+        <span>{filtered.length} resultat(s)</span>
       </div>
+
+      {showForm && (
+        <UserForm
+          onSubmit={handleCreate}
+          onCancel={() => setShowForm(false)}
+        />
+      )}
 
       {loading && <p>Chargement...</p>}
       {error && <p className="error">{error}</p>}
@@ -72,10 +84,10 @@ export default function UserList() {
 
       {selected && (
         <div className="detail-panel">
-          <h3>Détail</h3>
+          <h3>Detail</h3>
           <p>ID : {selected.id}</p>
-          <p>Username : {selected.username}</p>
-          <p>Rôle : {selected.role}</p>
+          <p>Identifiant : {selected.username}</p>
+          <p>Role : {selected.role}</p>
           <p>Actif : {selected.active ? "Oui" : "Non"}</p>
           <button onClick={() => setSelected(null)}>Fermer</button>
         </div>

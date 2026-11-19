@@ -54,3 +54,23 @@ app.post("/api/trucks", (req, res) => {
 app.listen(8080, () => {
   console.log("✅ Backend sur http://localhost:8080/api");
 });
+
+app.put("/api/trucks/:id", (req, res) => {
+  const db = readDB();
+  const id = Number(req.params.id);
+  const index = db.trucks.findIndex((t) => t.id === id);
+  
+  if (index === -1) return res.status(404).json({ error: "Camion introuvable" });
+  
+  db.trucks[index] = { ...db.trucks[index], ...req.body };
+  writeDB(db);
+  res.json(db.trucks[index]);
+});
+
+app.delete("/api/trucks/:id", (req, res) => {
+  const db = readDB();
+  const id = Number(req.params.id);
+  db.trucks = db.trucks.filter((t) => t.id !== id);
+  writeDB(db);
+  res.json({ success: true });
+});

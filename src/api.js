@@ -26,7 +26,7 @@ export async function createUser(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Création refusée");
+  if (!res.ok) throw new Error("Creation refusee");
   return await res.json();
 }
 
@@ -43,5 +43,22 @@ export async function createTruck(data) {
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Création camion refusée");
+  return await res.json();
+}
+export async function updateTruck(id, data) {
+  const res = await fetch(`${BASE_URL}/trucks/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Modification refusée");
+  return await res.json();
+}
+
+export async function archiveTruck(id) {
+  const res = await fetch(`${BASE_URL}/trucks/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Archivage refusé");
   return await res.json();
 }

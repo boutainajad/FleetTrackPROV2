@@ -1,21 +1,40 @@
-export default function AdminLayout({ view, onNavigate, children }) {
+import { useState } from "react";
+
+export default function DriverLayout({ user }) {
+  const [view, setView] = useState("home");
+
   return (
     <div className="admin-layout">
       <nav className="admin-menu">
         <button
-          className={view === "users" ? "menu-btn active" : "menu-btn"}
-          onClick={() => onNavigate("users")}
+          className={view === "home" ? "menu-btn active" : "menu-btn"}
+          onClick={() => setView("home")}
         >
-           Utilisateurs
+          Accueil
         </button>
         <button
-          className={view === "trucks" ? "menu-btn active" : "menu-btn"}
-          onClick={() => onNavigate("trucks")}
+          className={view === "trips" ? "menu-btn active" : "menu-btn"}
+          onClick={() => setView("trips")}
         >
-           Camions
+          Mes trajets
         </button>
       </nav>
-      <div className="admin-content">{children}</div>
+
+      <div className="admin-content">
+        {view === "home" && (
+          <>
+            <h2>Bienvenue, {user}</h2>
+            <p>Vous etes connecte en tant que chauffeur.</p>
+          </>
+        )}
+
+        {view === "trips" && (
+          <>
+            <h2>Mes trajets</h2>
+            <p>Cette fonctionnalite sera disponible dans la prochaine version (API non exposee).</p>
+          </>
+        )}
+      </div>
     </div>
   );
 }
