@@ -1,39 +1,18 @@
-import { useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
 
-export default function DriverLayout({ user }) {
-  const [view, setView] = useState("home");
-
+export default function DriverLayout() {
   return (
     <div className="admin-layout">
       <nav className="admin-menu">
-        <button
-          className={view === "home" ? "menu-btn active" : "menu-btn"}
-          onClick={() => setView("home")}
-        >
+        <NavLink to="/chauffeur" end className="menu-btn">
           Accueil
-        </button>
-        <button
-          className={view === "trips" ? "menu-btn active" : "menu-btn"}
-          onClick={() => setView("trips")}
-        >
+        </NavLink>
+        <NavLink to="/chauffeur/trajets" className="menu-btn">
           Mes trajets
-        </button>
+        </NavLink>
       </nav>
-
       <div className="admin-content">
-        {view === "home" && (
-          <>
-            <h2>Bienvenue, {user}</h2>
-            <p>Vous etes connecte en tant que chauffeur.</p>
-          </>
-        )}
-
-        {view === "trips" && (
-          <>
-            <h2>Mes trajets</h2>
-            <p>Cette fonctionnalite sera disponible dans la prochaine version (API non exposee).</p>
-          </>
-        )}
+        <Outlet />
       </div>
     </div>
   );
