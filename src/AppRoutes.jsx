@@ -5,6 +5,9 @@ import AdminLayout from "./components/AdminLayout";
 import DriverLayout from "./components/DriverLayout";
 import UserList from "./components/UserList";
 import TruckList from "./components/TruckList";
+import TrailerList from "./components/TrailerList";
+import TrailerDetail from "./components/TrailerDetail";
+import TrailerForm from "./components/TrailerForm";
 
 function RequireRole({ session, allowedRole, children }) {
   if (!session) return <Navigate to="/login" replace />;
@@ -41,6 +44,9 @@ export default function AppRoutes({ session, onLogin, onLogout, loading, error }
         <Route index element={<div style={{ padding: 20 }}>Bienvenue dans l'espace Admin</div>} />
         <Route path="utilisateurs" element={<UserList />} />
         <Route path="camions" element={<TruckList />} />
+        <Route path="remorques" element={<TrailerList />} />
+        <Route path="remorques/nouveau" element={<TrailerForm />} />
+        <Route path="remorques/:id" element={<TrailerDetail />} />
       </Route>
 
       <Route path="/chauffeur" element={

@@ -62,3 +62,25 @@ export async function archiveTruck(id) {
   if (!res.ok) throw new Error("Archivage refusé");
   return await res.json();
 }
+
+export async function getTrailers() {
+  const res = await fetch(`${BASE_URL}/trailers`);
+  if (!res.ok) throw new Error("Erreur chargement remorques");
+  return await res.json();
+}
+
+export async function getTrailerById(id) {
+  const res = await fetch(`${BASE_URL}/trailers/${id}`);
+  if (!res.ok) throw new Error("Remorque introuvable");
+  return await res.json();
+}
+
+export async function createTrailer(data) {
+  const res = await fetch(`${BASE_URL}/trailers`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Création remorque refusée");
+  return await res.json();
+}

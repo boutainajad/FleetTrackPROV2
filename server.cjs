@@ -51,6 +51,24 @@ app.post("/api/trucks", (req, res) => {
   res.status(201).json(newTruck);
 });
 
+app.get("/api/trailers", (req, res) => {
+  res.json(readDB().trailers);
+});
+
+app.get("/api/trailers/:id", (req, res) => {
+  const db = readDB();
+  const trailer = db.trailers.find((t) => t.id === Number(req.params.id));
+  if (!trailer) return res.status(404).json({ error: "Remorque introuvable" });
+  res.json(trailer);
+});
+
+app.post("/api/trailers", (req, res) => {
+  const db = readDB();
+  const newTrailer = { id: Date.now(), status: "AVAILABLE", ...req.body };
+  db.trailers.push(newTrailer);
+  writeDB(db);
+  res.status(201).json(newTrailer);
+});
 app.listen(8080, () => {
   console.log("✅ Backend sur http://localhost:8080/api");
 });

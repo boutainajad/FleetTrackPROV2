@@ -9,5 +9,9 @@
     { "id": 1, "plateNumber": "AB-123-CD", "status": "AVAILABLE", "brand": "Volvo" },
     { "id": 2, "plateNumber": "EF-456-GH", "status": "AVAILABLE", "brand": "Renault" },
     { "id": 3, "plateNumber": "IJ-789-KL", "status": "MAINTENANCE", "brand": "Mercedes" }
-  ]
+  ],
+  "trailers": [
+  { "id": 1, "plateNumber": "TR-111-AA", "capacity": 20, "status": "AVAILABLE" },
+  { "id": 2, "plateNumber": "TR-222-BB", "capacity": 15, "status": "MAINTENANCE" }
+]
 }

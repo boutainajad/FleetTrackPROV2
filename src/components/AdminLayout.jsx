@@ -1,21 +1,22 @@
-export default function AdminLayout({ view, onNavigate, children }) {
+import { NavLink, Outlet } from "react-router-dom";
+
+export default function AdminLayout() {
   return (
     <div className="admin-layout">
       <nav className="admin-menu">
-        <button
-          className={view === "users" ? "menu-btn active" : "menu-btn"}
-          onClick={() => onNavigate("users")}
-        >
-           Utilisateurs
-        </button>
-        <button
-          className={view === "trucks" ? "menu-btn active" : "menu-btn"}
-          onClick={() => onNavigate("trucks")}
-        >
-           Camions
-        </button>
+        <NavLink to="/admin/utilisateurs" className="menu-btn">
+          Utilisateurs
+        </NavLink>
+        <NavLink to="/admin/camions" className="menu-btn">
+          Camions
+        </NavLink>
+        <NavLink to="/admin/remorques" className="menu-btn">
+          Remorques
+        </NavLink>
       </nav>
-      <div className="admin-content">{children}</div>
+      <div className="admin-content">
+        <Outlet />
+      </div>
     </div>
   );
 }
