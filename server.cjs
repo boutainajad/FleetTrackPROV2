@@ -19,12 +19,19 @@ function writeDB(data) {
 app.post("/api/auth/login", (req, res) => {
   const { username, password } = req.body;
   const db = readDB();
+  
   const user = db.users.find(
     (u) => u.username === username && u.password === password
   );
-  if (!user) return res.status(401).json({ error: "Identifiants invalides" });
-  if (user.active === false) return res.status(403).json({ error: "Compte suspendu" });
-  
+
+  if (!user) {
+    return res.status(401).json({ error: "Identifiants invalides" });
+  }
+
+  if (user.active === false) {
+    return res.status(403).json({ error: "Compte suspendu" });
+  }
+
   res.json({ 
     token: "fake-token-" + user.id, 
     role: user.role, 

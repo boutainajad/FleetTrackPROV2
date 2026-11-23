@@ -6,8 +6,14 @@ export async function login(username, password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
   });
-  if (!res.ok) throw new Error("Identifiants invalides");
-  return await res.json();
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || "Identifiants invalides");
+  }
+  
+  return data;
 }
 
 export async function getUsers() {

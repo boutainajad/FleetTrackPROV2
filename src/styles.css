@@ -1,76 +1,114 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f0f2f5;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
 }
 
-/* Login */
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f7f6;
+  color: #333;
+}
+
+/* =========================================
+   LOGIN PAGE
+   ========================================= */
 .login-page {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
 }
 
 .login-card {
   background: white;
   padding: 40px;
-  border-radius: 8px;
-  width: 320px;
+  border-radius: 12px;
+  width: 380px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  gap: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .login-card h1 {
   text-align: center;
   margin: 0 0 20px 0;
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e3c72;
 }
 
+/* =========================================
+   FORMS & INPUTS
+   ========================================= */
 label {
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #555;
   margin-top: 8px;
 }
 
 input,
 select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+  background: #fafafa;
 }
 
 input:focus,
 select:focus {
-  outline: 2px solid #0077ff;
+  outline: none;
+  border-color: #2a5298;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
 }
 
 button {
-  padding: 10px;
-  background: #0077ff;
+  padding: 12px;
+  background: #2a5298;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s;
   margin: 0;
+}
+
+button:hover {
+  background: #1e3c72;
 }
 
 button:disabled {
-  background: #999;
+  background: #a0aec0;
+  cursor: not-allowed;
 }
 
 .error {
-  color: red;
+  color: #e53e3e;
   font-size: 13px;
-  margin: 0;
+  font-weight: 500;
+  margin: 5px 0;
+  padding: 8px;
+  background: #fff5f5;
+  border-radius: 4px;
+  border-left: 3px solid #e53e3e;
 }
 
-/* Shell */
+/* =========================================
+   APP SHELL & HEADER
+   ========================================= */
 .shell {
   min-height: 100vh;
   display: flex;
@@ -78,35 +116,53 @@ button:disabled {
 }
 
 .shell-header {
-  background: #222;
+  background: #1e293b;
   color: white;
-  padding: 12px 24px;
+  padding: 16px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.shell-header span:first-child {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .shell-user {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  font-size: 14px;
 }
 
 .logout-btn {
-  background: #d9534f;
-  padding: 6px 12px;
+  background: #ef4444;
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
 }
 
 .shell-content {
   flex: 1;
-  padding: 24px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-/* Admin */
+/* =========================================
+   LAYOUT (ADMIN & DRIVER)
+   ========================================= */
 .admin-layout {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 24px;
+  grid-template-columns: 240px 1fr;
+  gap: 30px;
 }
 
 .admin-menu {
@@ -115,32 +171,65 @@ button:disabled {
   gap: 8px;
 }
 
-.menu-btn {
+a.menu-btn {
+  display: block;
+  text-decoration: none;
+  color: #475569;
   background: white;
-  color: #333;
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: left;
+  border: 1px solid #e2e8f0;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
 }
 
-.menu-btn.active {
-  background: #0077ff;
+a.menu-btn:hover {
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+a.menu-btn.active {
+  background: #2a5298;
   color: white;
+  border-color: #2a5298;
+  box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
 }
 
 .admin-content {
   background: white;
-  padding: 24px;
-  border-radius: 8px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  min-height: 500px;
 }
 
-/* Listes */
+.admin-content h2 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #1e293b;
+}
+
+/* =========================================
+   TABLES & LISTS
+   ========================================= */
 .filter-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.filter-row h2 {
+  margin: 0;
+  margin-right: auto;
+}
+
+.filter-row select {
+  width: auto;
+  min-width: 150px;
 }
 
 .item-list {
@@ -152,106 +241,102 @@ button:disabled {
 .item {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  margin-bottom: 8px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #edf2f7;
+  border-radius: 8px;
+  margin-bottom: 12px;
   cursor: pointer;
-  background: white;
+  background: #fafbfc;
+  transition: all 0.2s;
 }
 
 .item:hover {
-  background: #f5f5f5;
+  border-color: #cbd5e0;
+  background: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.item.selected {
-  border-color: #0077ff;
-  background: #e6f0ff;
+.item strong {
+  font-size: 15px;
+  color: #1e293b;
 }
 
 .role-badge {
-  background: #eee;
-  padding: 2px 8px;
-  border-radius: 12px;
+  background: #e2e8f0;
+  color: #4a5568;
+  padding: 4px 12px;
+  border-radius: 20px;
   font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
-.detail-panel {
-  background: white;
-  border: 1px solid #ddd;
+/* =========================================
+   DETAIL PANEL & FORMS
+   ========================================= */
+.detail-panel, .user-form {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 16px;
-  margin-top: 20px;
+  padding: 24px;
+  margin-top: 24px;
 }
 
-/* Driver */
-.driver-layout {
-  max-width: 600px;
-}
-a.menu-btn {
-  display: block;
-  text-decoration: none;
-  color: #333;
-}
-
-a.menu-btn.active {
-  background: #0077ff;
-  color: white;
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-  .admin-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-.user-form {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
+.detail-panel h2, .detail-panel h3, .user-form h3 {
+  margin-top: 0;
+  color: #2d3748;
+  font-size: 18px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 12px;
   margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-width: 400px;
 }
 
-.user-form h3 {
-  margin: 0 0 10px 0;
+.detail-panel p {
+  margin: 10px 0;
+  font-size: 15px;
+  color: #4a5568;
 }
 
 .form-actions {
   display: flex;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 12px;
+  margin-top: 24px;
 }
 
 .form-actions button[type="button"] {
-  background: #999;
+  background: #718096;
 }
 
-button:focus-visible, input:focus-visible, select:focus-visible {
-  outline: 3px solid #ff9800;
-  outline-offset: 2px;
+.form-actions button[type="button"]:hover {
+  background: #4a5568;
 }
 
-/* Adaptations Mobile */
-@media (max-width: 600px) {
+/* =========================================
+   RESPONSIVE (MOBILE)
+   ========================================= */
+@media (max-width: 768px) {
   .admin-layout {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
+  
   .admin-menu {
     flex-direction: row;
     overflow-x: auto;
+    padding-bottom: 10px;
   }
-  .menu-btn {
+  
+  a.menu-btn {
     white-space: nowrap;
   }
-  .login-card {
-    width: 90%;
-    padding: 20px;
+  
+  .filter-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .shell-content {
+    padding: 15px;
   }
 }
