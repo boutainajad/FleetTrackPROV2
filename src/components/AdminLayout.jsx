@@ -13,6 +13,9 @@ export default function AdminLayout() {
         <NavLink to="/admin/remorques" className="menu-btn">
           Remorques
         </NavLink>
+        <NavLink to="/admin/trajets" className="menu-btn">
+          Trajets
+        </NavLink>
       </nav>
       <div className="admin-content">
         <Outlet />

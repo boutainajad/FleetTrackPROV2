@@ -6,11 +6,7 @@ export async function login(username, password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
   });
-
-  if (!res.ok) {
-    throw new Error("Identifiants invalides");
-  }
-
+  if (!res.ok) throw new Error("Identifiants invalides");
   return await res.json();
 }
 
@@ -42,16 +38,17 @@ export async function createTruck(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Création camion refusée");
+  if (!res.ok) throw new Error("Creation camion refusee");
   return await res.json();
 }
+
 export async function updateTruck(id, data) {
   const res = await fetch(`${BASE_URL}/trucks/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Modification refusée");
+  if (!res.ok) throw new Error("Modification refusee");
   return await res.json();
 }
 
@@ -59,7 +56,7 @@ export async function archiveTruck(id) {
   const res = await fetch(`${BASE_URL}/trucks/${id}`, {
     method: "DELETE",
   });
-  if (!res.ok) throw new Error("Archivage refusé");
+  if (!res.ok) throw new Error("Archivage refuse");
   return await res.json();
 }
 
@@ -81,6 +78,48 @@ export async function createTrailer(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Création remorque refusée");
+  if (!res.ok) throw new Error("Creation remorque refusee");
+  return await res.json();
+}
+
+export async function getTrips() {
+  const res = await fetch(`${BASE_URL}/trips`);
+  if (!res.ok) throw new Error("Erreur chargement trajets");
+  return await res.json();
+}
+
+export async function getTripById(id) {
+  const res = await fetch(`${BASE_URL}/trips/${id}`);
+  if (!res.ok) throw new Error("Trajet introuvable");
+  return await res.json();
+}
+
+export async function createTrip(data) {
+  const res = await fetch(`${BASE_URL}/trips`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (res.status === 409) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || "Conflit d'assignation");
+  }
+  if (!res.ok) throw new Error("Creation du trajet refusee");
+  return await res.json();
+}
+
+export async function getMyTrips(driverId) {
+  const res = await fetch(`${BASE_URL}/driver/trips?driverId=${driverId}`);
+  if (!res.ok) throw new Error("Erreur chargement de vos trajets");
+  return await res.json();
+}
+
+export async function updateTripStatus(id, status) {
+  const res = await fetch(`${BASE_URL}/trips/${id}/status`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  if (!res.ok) throw new Error("Mise a jour du statut refusee");
   return await res.json();
 }

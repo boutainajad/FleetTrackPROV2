@@ -8,6 +8,11 @@ import TruckList from "./components/TruckList";
 import TrailerList from "./components/TrailerList";
 import TrailerDetail from "./components/TrailerDetail";
 import TrailerForm from "./components/TrailerForm";
+import TripList from "./components/TripList";
+import TripDetail from "./components/TripDetail";
+import TripForm from "./components/TripForm";
+import MyTrips from "./components/MyTrips";
+import MyTripDetail from "./components/MyTripDetail";
 
 function RequireRole({ session, allowedRole, children }) {
   if (!session) return <Navigate to="/login" replace />;
@@ -47,6 +52,9 @@ export default function AppRoutes({ session, onLogin, onLogout, loading, error }
         <Route path="remorques" element={<TrailerList />} />
         <Route path="remorques/nouveau" element={<TrailerForm />} />
         <Route path="remorques/:id" element={<TrailerDetail />} />
+        <Route path="trajets" element={<TripList />} />
+        <Route path="trajets/nouveau" element={<TripForm />} />
+        <Route path="trajets/:id" element={<TripDetail />} />
       </Route>
 
       <Route path="/chauffeur" element={
@@ -57,7 +65,8 @@ export default function AppRoutes({ session, onLogin, onLogout, loading, error }
         </RequireRole>
       }>
         <Route index element={<div style={{ padding: 20 }}>Bienvenue Chauffeur</div>} />
-        <Route path="trajets" element={<div style={{ padding: 20 }}>Mes trajets (a venir)</div>} />
+        <Route path="trajets" element={<MyTrips session={session} />} />
+        <Route path="trajets/:id" element={<MyTripDetail />} />
       </Route>
 
       <Route path="/" element={

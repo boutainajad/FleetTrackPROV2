@@ -11,7 +11,11 @@
     { "id": 3, "plateNumber": "IJ-789-KL", "status": "MAINTENANCE", "brand": "Mercedes" }
   ],
   "trailers": [
-  { "id": 1, "plateNumber": "TR-111-AA", "capacity": 20, "status": "AVAILABLE" },
-  { "id": 2, "plateNumber": "TR-222-BB", "capacity": 15, "status": "MAINTENANCE" }
-]
+    { "id": 1, "plateNumber": "TR-111-AA", "capacity": 20, "status": "AVAILABLE" },
+    { "id": 2, "plateNumber": "TR-222-BB", "capacity": 15, "status": "MAINTENANCE" }
+  ],
+  "trips": [
+    { "id": 1, "departure": "Casablanca", "arrival": "Marrakech", "status": "PLANNED", "driverId": 2, "truckId": 1, "trailerId": 1 },
+    { "id": 2, "departure": "Rabat", "arrival": "Tanger", "status": "IN_PROGRESS", "driverId": 3, "truckId": 2, "trailerId": 2 }
+  ]
 }
