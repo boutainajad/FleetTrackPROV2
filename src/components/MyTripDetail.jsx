@@ -1,69 +1,80 @@
-import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import { getTripById, updateTripStatus } from "../api";
+import { useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getMyTripById, updateTripStatus } from "../api";
 
 export default function MyTripDetail() {
   const { id } = useParams();
   const [trip, setTrip] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [updating, setUpdating] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const activeRequest = useRef(null);
+  const submitting = useRef(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+    activeRequest.current = controller;
+    submitting.current = false;
+    setTrip(null);
+    setError("");
     setLoading(true);
-    getTripById(id)
-      .then((data) => {
-        setTrip(data);
-        setLoading(false);
+    setSaving(false);
+    getMyTripById(id, { signal: controller.signal })
+      .then((item) => {
+        if (!controller.signal.aborted) setTrip(item);
       })
-      .catch((e) => {
-        setError(e.message);
-        setLoading(false);
+      .catch((err) => {
+        if (!controller.signal.aborted) setError(err.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
       });
+    return () => controller.abort();
   }, [id]);
 
-  async function handleAdvanceStatus() {
-    setUpdating(true);
+  async function changeStatus() {
+    if (submitting.current || !trip || !["planifie", "en_cours"].includes(trip.statut)) return;
+    const controller = activeRequest.current;
+    const starting = trip.statut === "planifie";
+    submitting.current = true;
+    setSaving(true);
     setError("");
-    
-    let nextStatus = "PLANNED";
-    if (trip.status === "PLANNED") nextStatus = "IN_PROGRESS";
-    else if (trip.status === "IN_PROGRESS") nextStatus = "COMPLETED";
-
     try {
-      const updated = await updateTripStatus(trip.id, nextStatus);
-      setTrip(updated);
+      const updated = await updateTripStatus(trip._id, starting ? "en_cours" : "termine");
+      if (!controller.signal.aborted) setTrip((current) => ({ ...current, ...updated }));
     } catch (err) {
-      setError(err.message);
+      if (!controller.signal.aborted) setError(err.message);
     } finally {
-      setUpdating(false);
+      if (!controller.signal.aborted) {
+        submitting.current = false;
+        setSaving(false);
+      }
     }
   }
 
-  if (loading) return <p>Chargement...</p>;
-  if (error && !trip) return <p className="error">{error}</p>;
-  if (!trip) return null;
+  if (loading) return <p role="status">Chargement...</p>;
 
-  return (
-    <div className="detail-panel">
-      <h2>Detail du trajet</h2>
-      <p>ID : {trip.id}</p>
-      <p>Depart : {trip.departure}</p>
-      <p>Arrivee : {trip.arrival}</p>
-      <p>Statut : <strong>{trip.status}</strong></p>
-      
-      {error && <p className="error">{error}</p>}
-
-      <div className="form-actions" style={{ marginTop: '20px' }}>
-        {trip.status !== "COMPLETED" && (
-          <button onClick={handleAdvanceStatus} disabled={updating}>
-            {updating ? "Mise a jour..." : "Avancer le statut"}
-          </button>
-        )}
-        <Link to="/chauffeur/trajets" style={{ textDecoration: 'none', padding: '10px', background: '#999', color: 'white', borderRadius: '4px' }}>
-          Retour
-        </Link>
+  return <section className="detail-panel">
+    <h2>Détail du trajet</h2>
+    {error && <p role="alert" className="error">{error}</p>}
+    {trip && <>
+      <p>ID : {trip._id}</p>
+      <p>Départ : {trip.siteDepart}</p>
+      <p>Arrivée : {trip.siteArrivee}</p>
+      <p>Marchandise : {trip.marchandise}</p>
+      <p>Statut : <strong>{trip.statut}</strong></p>
+      {trip.kmDepart != null && <p>Kilométrage de départ : {trip.kmDepart} km</p>}
+      {trip.kmArrivee != null && <p>Kilométrage d’arrivée : {trip.kmArrivee} km</p>}
+      <div className="form-actions">
+        {trip.statut === "planifie" && <button type="button" onClick={changeStatus} disabled={saving}>
+          {saving ? "Démarrage..." : "Démarrer le trajet"}
+        </button>}
+        {trip.statut === "en_cours" && <button type="button" onClick={changeStatus} disabled={saving}>
+          {saving ? "Enregistrement..." : "Terminer le trajet"}
+        </button>}
       </div>
-    </div>
-  );
+      {trip.statut === "termine" && <p>Ce trajet est terminé.</p>}
+    </>}
+    <Link to="/chauffeur/trajets">Retour aux trajets</Link>
+  </section>;
 }

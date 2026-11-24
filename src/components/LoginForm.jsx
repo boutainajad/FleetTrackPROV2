@@ -1,46 +1,21 @@
 import { useState } from "react";
 
-export default function LoginForm({ onLogin, loading, error }) {
-  const [username, setUsername] = useState("");
+export default function LoginForm({ onLogin, loading = false, error = "" }) {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    
-    if (!username || !password) {
-      return;
-    }
-    
-    onLogin(username, password);
+  function submit(event) {
+    event.preventDefault();
+    if (!loading && email.trim() && password) onLogin(email.trim(), password);
   }
-
-  return (
-    <div className="login-page">
-      <form className="login-card" onSubmit={handleSubmit}>
-        <h1>FleetTrackPRO</h1>
-
-        <label htmlFor="username">Identifiant</label>
-        <input
-          id="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-
-        <label htmlFor="password">Mot de passe</label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {error && <p className="error">{error}</p>}
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Connexion..." : "Se connecter"}
-        </button>
-      </form>
-    </div>
-  );
+  return <div className="login-page">
+    <form className="login-card" onSubmit={submit} aria-busy={loading}>
+      <h1>FleetTrackPRO</h1>
+      <label htmlFor="email">Email</label>
+      <input id="email" name="email" type="email" autoComplete="username" required disabled={loading} value={email} onChange={(e) => setEmail(e.target.value)} />
+      <label htmlFor="password">Mot de passe</label>
+      <input id="password" name="password" type="password" autoComplete="current-password" required disabled={loading} value={password} onChange={(e) => setPassword(e.target.value)} />
+      {error && <p className="error" role="alert">{error}</p>}
+      <button type="submit" disabled={loading}>{loading ? "Connexion..." : "Se connecter"}</button>
+    </form>
+  </div>;
 }
